@@ -24,12 +24,19 @@ namespace UnitySampleAssets._2D
         private Animator anim; // Reference to the player's animator component.
 
 
+		private Transform graphics; // reference to the player graphics so we can change direction
+		public bool flipChildren = false; // Whether or not to also flip thall player's children and not only the player grpahics.
+
         private void Awake()
         {
             // Setting up references.
             groundCheck = transform.Find("GroundCheck");
             ceilingCheck = transform.Find("CeilingCheck");
             anim = GetComponent<Animator>();
+			graphics = transform.FindChild ("Graphics");
+			if (graphics == null) {
+				Debug.LogError("Ther's no 'graphics' children on player!");
+			}
         }
 
 
@@ -96,10 +103,12 @@ namespace UnitySampleAssets._2D
             // Switch the way the player is labelled as facing.
             facingRight = !facingRight;
 
+			Transform toTransform = flipChildren ? transform : graphics;
+
             // Multiply the player's x local scale by -1.
-            Vector3 theScale = transform.localScale;
+            Vector3 theScale = toTransform.localScale;
             theScale.x *= -1;
-            transform.localScale = theScale;
+			toTransform.localScale = theScale;
         }
     }
 }
