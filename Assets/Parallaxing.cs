@@ -3,26 +3,30 @@ using System.Collections;
 
 public class Parallaxing : MonoBehaviour {
 
-	public Transform[] bgs; 		//Sprites to be parallaxed
-	private float[] scales; 		// proportion of cameras movement to move bgs by.
+	public Transform[] objectsToParallax; 		//Sprites to be parallaxed
+	private float[] scales; 					// proportion of cameras movement to move bgs by.
 
-	public float smoothing = 1f; 	//how smooth the parallax is: >0
+	public float smoothing = 1f; 				//how smooth the parallax is: >0
 
-	private Transform cam; 			// main camera transform
-	private Vector3 lastCamPos; 	// camera pos in previous frame
+	private Transform cam; 						// main camera transform
+	private Vector3 lastCamPos; 				// camera pos in previous frame
 
 
+	/// <summary>
+	/// Adds the object to the objectToParallax list.
+	/// </summary>
+	/// <param name="bg">Background to parallax</param>
 	public void AddBG(Transform bg)
 	{
-		Transform[] newBgs = new Transform[bgs.Length + 1];
+		Transform[] newBgs = new Transform[objectsToParallax.Length + 1];
 
-		for (int i=0;i<bgs.Length; i++) {
-			newBgs[i] = bgs[i];
+		for (int i=0;i<objectsToParallax.Length; i++) {
+			newBgs[i] = objectsToParallax[i];
 		}
 
-		newBgs[bgs.Length] = bg;
+		newBgs[objectsToParallax.Length] = bg;
 
-		bgs = newBgs;
+		objectsToParallax = newBgs;
 
 		StartScales ();
 	}
@@ -47,9 +51,9 @@ public class Parallaxing : MonoBehaviour {
 	void StartScales()
 	{
 		// assign corresponding parallax size
-		scales = new float[bgs.Length];
-		for (int i = 0; i<bgs.Length; i++) {
-			scales[i] = bgs[i].position.z *-1;
+		scales = new float[objectsToParallax.Length];
+		for (int i = 0; i<objectsToParallax.Length; i++) {
+			scales[i] = objectsToParallax[i].position.z *-1;
 		}
 
 	}
@@ -61,19 +65,19 @@ public class Parallaxing : MonoBehaviour {
 
 
 		// for each bg 
-		for (int i = 0; i<bgs.Length; i++) {
+		for (int i = 0; i<objectsToParallax.Length; i++) {
 			// the prallax is the opposite of the camara movement because the prevuous frame multiplied by the scale
 			float parallax = (lastCamPos.x - cam.position.x) * (scales[i]);
 
 			// set a target x position which is the current pos + the parallax 
-			float bgTargetPosX = bgs[i].position.x + parallax;
+			float bgTargetPosX = objectsToParallax[i].position.x + parallax;
 
 
 			// Create the target position for the bg based on the bgTargetPosX
-			Vector3 bgTargetPos = new Vector3(bgTargetPosX,bgs[i].position.y,bgs[i].position.z);
+			Vector3 bgTargetPos = new Vector3(bgTargetPosX,objectsToParallax[i].position.y,objectsToParallax[i].position.z);
 
 			// fade between current pos and target pos using Lerp
-			bgs[i].position = Vector3.Lerp(bgs[i].position,bgTargetPos, smoothing * Time.deltaTime);
+			objectsToParallax[i].position = Vector3.Lerp(objectsToParallax[i].position,bgTargetPos, smoothing * Time.deltaTime);
 
 
 		}

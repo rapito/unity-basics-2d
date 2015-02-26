@@ -148,12 +148,12 @@ TextureImporter:
     - name: AstronautArm
       rect:
         serializedVersion: 2
-        x: 57
+        x: 58
         y: 153
         width: 12
         height: 5
-      alignment: 4
-      pivot: {x: 0, y: .5}
+      alignment: 9
+      pivot: {x: .18333371, y: .58001101}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: MachineGun
       rect:

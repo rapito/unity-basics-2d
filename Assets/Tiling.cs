@@ -17,6 +17,10 @@ public class Tiling : MonoBehaviour {
 
 	public bool reverseScale = false; // Used if the object is not tileable
 
+	// whether to add new clones into the GM GameObject's Parallaxing class to handle it.
+	// If you are parallaxing a container instead of a 'stand-alone' sprite, then set this to false.
+	public bool addtoGM = false; 	
+
 	private float width = 0f;
 	private Camera cam;
 	private Transform trans;
@@ -91,8 +95,18 @@ public class Tiling : MonoBehaviour {
             buddy.GetComponent<Tiling>().rightBuddy = true;
         }
 
-		GameObject gm = GameObject.Find ("_GM"); 
-		Parallaxing parallax = gm.GetComponent<Parallaxing> ();
-		parallax.AddBG(buddy);
+		// Add to Game manager GameObject.
+		if (addtoGM) {
+			GameObject gm = GameObject.Find ("_GM"); 
+			if(gm == null)
+			{
+				Debug.LogError("Could not find '_GM' GameObject ignoring 'addToGM' value");
+			}
+			else 
+			{
+				Parallaxing parallax = gm.GetComponent<Parallaxing> ();
+				parallax.AddBG(buddy);
+			}
+		}
     }
 }
