@@ -5,10 +5,14 @@ public class Weapon : MonoBehaviour
 {
 
 	public float fireRate = 0f;				// Rate at which to fire bullets.
+	//private float effectSpawnRate = 10f;		// Rate at which to spawn the effect.
 	public float cooldown = 5f;				// Cooldown time after weapon has overloaded
 	public float damage = 1f;
 	public LayerMask whatToHit;				// Layers that won't be 'hit' by the weapon
+	public Transform trailPrefab; 			// Objet to be used as the Weapon's Trail
 
+
+	//float effectSpawnInterval = 0f;			// Interval to wait between effect spawn.
 	float fireInterval = 0f;				// Interval to wait between burst fire.
 	Transform firePoint;
 	float shootReach = 100f;
@@ -55,11 +59,23 @@ public class Weapon : MonoBehaviour
 		Vector2 firePointPos = new Vector2 (firePoint.position.x, firePoint.position.y);
 		RaycastHit2D hit = Physics2D.Raycast (firePointPos, targetPos - firePointPos, shootReach , whatToHit);
 
+		//if (Time.time > effectSpawnInterval) {
+		//	effectSpawnInterval = Time.time + 1/effectSpawnRate;
+			Effect ();
+		//}
+
+
 		Debug.DrawLine (firePointPos, (targetPos - firePointPos) * 6f, Color.green);
 		if (hit.collider != null) {
 
 			Debug.DrawLine (firePointPos, hit.point, Color.red);
 
 		}
+	}
+
+	void Effect()
+	{
+		// Create our trail prefab on the firePoint position and rotation.
+		Instantiate (trailPrefab,firePoint.position, firePoint.rotation);
 	}
 }
