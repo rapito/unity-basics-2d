@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
 	public float damage = 1f;
 	public LayerMask whatToHit;				// Layers that won't be 'hit' by the weapon
 	public Transform trailPrefab; 			// Objet to be used as the Weapon's Trail
+	public Transform triggerEffectPrefab; 	// Objet to be used as the Weapon's triggered Effect (ie: MuzzleFlash)
 
 
 	//float effectSpawnInterval = 0f;			// Interval to wait between effect spawn.
@@ -77,5 +78,14 @@ public class Weapon : MonoBehaviour
 	{
 		// Create our trail prefab on the firePoint position and rotation.
 		Instantiate (trailPrefab,firePoint.position, firePoint.rotation);
+		// create our trigger effect 
+		Transform clone = Instantiate (triggerEffectPrefab,firePoint.position, firePoint.rotation) as Transform;
+		clone.parent = firePoint;
+
+		// Assign a random sie to it.
+		float size = Random.Range (0.4f,1f);
+		clone.localScale = Vector3.one * size;
+		Destroy (clone.gameObject, 0.02f);
+
 	}
 }
