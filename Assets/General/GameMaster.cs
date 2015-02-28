@@ -8,6 +8,8 @@ public class GameMaster : MonoBehaviour {
 	public static GameMaster GM;
 	public Transform playerPrefab;
 	public Transform spawnPoint;
+	public Transform spawnPrefab; // Effect to use for Respawning.
+
 	public int spawnDelay = 0; // Tim eto wait before respawning the player.
 
 
@@ -20,10 +22,16 @@ public class GameMaster : MonoBehaviour {
 
 	public IEnumerator RespawnPlayer()
 	{
-		Debug.Log ("TODO: Waiting for spawn sound");
+		audio.Play ();
 		yield return new WaitForSeconds (spawnDelay);
 
 		Transform player = Instantiate(playerPrefab,spawnPoint.position,spawnPoint.rotation) as Transform;
+		GameObject effect = (Instantiate(spawnPrefab,spawnPoint.position,spawnPoint.rotation) as Transform).gameObject;
+
+		// Delete effect after someTime
+		Destroy (effect, 1.8f);
+
+		// Point main camera back to character;
 		Camera2DFollow cam = Camera.main.GetComponent<Camera2DFollow> ();
 		cam.target = player;
 	}
