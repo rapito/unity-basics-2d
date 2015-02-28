@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnitySampleAssets._2D;
+
 
 public class GameMaster : MonoBehaviour {
 
@@ -17,8 +19,9 @@ public class GameMaster : MonoBehaviour {
 
 	public void RespawnPlayer()
 	{
-		Transform player = Instantiate(playerPrefab,spawnPoint.position,spawnPoint.rotation);
-
+		Transform player = Instantiate(playerPrefab,spawnPoint.position,spawnPoint.rotation) as Transform;
+		Camera2DFollow cam = Camera.main.GetComponent<Camera2DFollow> ();
+		cam.target = player;
 	}
 
 	public static void KillPlayer(Player player)
