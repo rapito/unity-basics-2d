@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
 	{
 		playerStats.Health -= damage;
 		if (playerStats.Health <= 0) {
-			Debug.LogError("Player is DEAD!");
+			Debug.Log("Player is DEAD!");
 			GameMaster.KillPlayer(this);
 		}
 
